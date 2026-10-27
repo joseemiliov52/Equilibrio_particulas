@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mecánica Vectorial para Ingenieros</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Estilos Institucionales Base - UDO / MSc. Rubén Vega */
+:root{
+  --bg:#EDF1F5;
+  --panel:#FFFFFF;
+  --ink:#0E2238;
+  --muted:#56677A;
+  --line:#D2DBE4;
+  --accent:#B71C2B;
+  --on-accent:#FFFFFF;
+  --band:#0E2238;
+  --on-band:#F4F7FA;
+  --band-muted:#9FB2C6;
+  --soft:#E3EAF1;
+  --font-display:'Archivo','Arial Narrow',system-ui,sans-serif;
+  --font-body:'Public Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A141F;--panel:#112031;--ink:#E7EEF6;--muted:#97A9BC;--line:#243649;
+    --accent:#FF7280;--on-accent:#2A0509;--band:#07101A;--on-band:#F1F5F9;--band-muted:#8EA3B8;--soft:#18293B;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A141F;--panel:#112031;--ink:#E7EEF6;--muted:#97A9BC;--line:#243649;
+  --accent:#FF7280;--on-accent:#2A0509;--band:#07101A;--on-band:#F1F5F9;--band-muted:#8EA3B8;--soft:#18293B;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.5}
+.page{min-height:100%;display:flex;flex-direction:column}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.in{max-width:1240px;margin:0 auto;width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button{font-family:inherit}
+
+/* Header Institucional */
+.band{background:var(--band);color:var(--on-band)}
+.brand{display:flex;align-items:center;gap:16px;padding-block:18px 14px}
+.logo{width:68px;height:68px;border-radius:50%;flex:none;display:block;background:#fff;object-fit:contain}
+h1{margin:0;font:700 clamp(24px,4vw,42px)/1 var(--font-display);font-stretch:85%;letter-spacing:.01em;text-transform:uppercase;text-wrap:balance}
+.sub{margin:6px 0 0;font:600 clamp(13px,1.8vw,16px)/1.2 var(--font-display);font-stretch:90%;letter-spacing:.18em;text-transform:uppercase;color:var(--band-muted)}
+.sub b{color:var(--on-band);font-weight:700}
+
+/* Navegación por pestañas */
+nav{overflow-x:auto;scrollbar-width:thin}
+.tabs{display:flex;gap:2px;min-width:max-content}
+.tab{appearance:none;border:0;background:transparent;color:var(--band-muted);padding:12px 16px;font:600 14.5px var(--font-body);cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+.tab:hover{color:var(--on-band)}
+.tab[aria-selected="true"]{color:var(--on-band);border-bottom-color:var(--accent)}
+
+/* Contenido Principal */
+main{flex:1;padding-block:22px 28px}
+.view[hidden]{display:none}
+.head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:8px 20px;margin-bottom:14px}
+h2{margin:0;font:700 clamp(20px,2.8vw,28px)/1.1 var(--font-display);font-stretch:88%;text-wrap:balance}
+.lead{margin:6px 0 0;color:var(--muted);max-width:75ch;font-size:15px}
+
+/* Controles de Segmento (Sub-pestañas) */
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--panel)}
+.seg button{border:0;border-right:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 14px;font:500 14px var(--font-body);cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);font-weight:600}
+
+/* Paneles y Tarjetas */
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;min-width:0;overflow:hidden}
+.bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 14px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.bar h3{margin:0;font:600 16px/1.3 var(--font-body)}
+.bar p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;gap:8px;font:600 14px var(--font-body);padding:9px 14px;border:1px solid var(--line);border-radius:6px;background:var(--panel);color:var(--ink);cursor:pointer;text-decoration:none}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.pri:hover{filter:brightness(1.06)}
+.btn svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+/* iFrames */
+.frame{display:block;width:100%;height:680px;min-height:480px;border:0;background:var(--bg);border-radius:0 0 8px 8px;transition:height 0.15s ease}
+.frame.tall{height:760px}
+
+/* Links & Grid para Guía */
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;padding:8px 0}
+.link-card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:20px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.link-card h3{margin:0;font:600 18px/1.3 var(--font-body)}
+.link-card p{margin:6px 0 0;font-size:14px;color:var(--muted)}
+.link-card ul{margin:10px 0 0;padding-left:20px;color:var(--muted);font-size:13.5px}
+.link-card ul li{margin-bottom:4px}
+
+/* Footer Institucional */
+footer{background:var(--band);color:var(--band-muted);padding-block:14px calc(14px + env(safe-area-inset-bottom,0px))}
+.foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 20px;font-size:13.5px}
+.me{font:700 18px var(--font-display);font-stretch:90%;letter-spacing:.03em;color:var(--on-band);margin-left:auto;text-align:right}
+
+.msg-status{font-size:13px;color:var(--muted);margin:0}
+
+@media (max-width:560px){
+  .logo{width:54px;height:54px}
+  .seg button{padding:8px 10px;font-size:13px}
+  .frame{height:580px}
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <!-- Header con banda institucional -->
+  <header class="band">
+    <div class="pad">
+      <div class="in brand">
+        <img class="logo" src="https://thumb.wikimedia.org/wikipedia/commons/thumb/4/41/Logo_UDO.svg/1280px-Logo_UDO.svg.png?utm_source=es.wikipedia.org&utm_campaign=index&utm_content=thumbnail" alt="Escudo Universidad de Oriente" width="68" height="68">
+        <div>
+          <h1>Mecánica Vectorial para Ingenieros</h1>
+          <p class="sub"><b>Equilibrio de partículas</b> &nbsp;·&nbsp; Universidad de Oriente</p>
+        </div>
+      </div>
+    </div>
+    <nav class="pad" aria-label="Secciones">
+      <div class="in">
+        <div class="tabs" role="tablist" id="tabs"></div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Contenido Dinámico por Pestañas -->
+  <main class="pad">
+    <div class="in">
+      <!-- Pestaña 1: Juego (Inicio) -->
+      <section class="view" id="v-inicio" role="tabpanel" aria-label="Juego Home Run">
+        <div class="head">
+          <div>
+            <h2>⚾ Home Run: Equilibrio de partículas</h2>
+            <p class="lead">Demuestra tus conocimientos respondiendo preguntas conceptuales y ejercicios prácticos del Tema 3 para batear un cuadrangular.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="bar">
+            <div>
+              <h3>Juego Interactivo: Home Run</h3>
+              <p>Responde correctamente cada pregunta para conectar un jonrón. Evita los strikes y ponches.</p>
+            </div>
+            <div class="acts">
+              <button type="button" class="btn" id="btn-fs-game">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+                <span>Pantalla completa</span>
+              </button>
+              <button type="button" class="btn" id="btn-dl-game">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg>
+                <span>Descargar juego</span>
+              </button>
+            </div>
+          </div>
+          <iframe class="frame" id="f-game" title="Juego Home Run: Equilibrio de partículas" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+      </section>
+
+      <!-- Pestaña 2: Guía de clase -->
+      <section class="view" id="v-guia" role="tabpanel" aria-label="Guía de clase" hidden>
+        <div class="head">
+          <div>
+            <h2>Guía de clase</h2>
+            <p class="lead">Material teórico y práctico del Tema 3: Equilibrio de partículas en el plano y en el espacio.</p>
+          </div>
+        </div>
+        <div class="link-grid">
+          <div class="link-card">
+            <div>
+              <h3>📘 Tema 3: Equilibrio de partículas</h3>
+              <p>Documento completo con la teoría, diagramas de cuerpo libre (DCL), conexiones y ejercicios de aplicación.</p>
+              <ul>
+                <li>Condición de equilibrio de una partícula (&Sigma;F = 0)</li>
+                <li>Diagramas de cuerpo libre (DCL) en 2D y 3D</li>
+                <li>Análisis de cables, poleas y resortes elásticos</li>
+                <li>Problemas resueltos y propuestos para repasar</li>
+              </ul>
+            </div>
+            <div>
+              <a href="https://drive.google.com/file/d/1joZ0UbyCfJGl0taP8jtXarifV76a1Q8F/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn pri">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg>
+                <span>Abrir en Google Drive</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pestaña 3: Simuladores -->
+      <section class="view" id="v-simuladores" role="tabpanel" aria-label="Simuladores" hidden>
+        <div class="head">
+          <div>
+            <h2>Simuladores interactivos</h2>
+            <p class="lead">Explora conceptos de transmisión de fuerzas, ventaja mecánica y respuesta elástica de componentes.</p>
+          </div>
+          <div class="seg" role="group" id="sim-selector" aria-label="Elegir simulador">
+            <button type="button" aria-pressed="true" data-sim="poleas">Poleas</button>
+            <button type="button" aria-pressed="false" data-sim="res">Resorte y barra 3D</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="bar">
+            <div>
+              <h3 id="sim-title">Simulador de poleas</h3>
+              <p id="sim-desc">Fuerza al jalar una cuerda con 1, 2, 3 y 4 poleas</p>
+            </div>
+            <div class="acts">
+              <button type="button" class="btn" id="btn-fs-sim">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+                <span>Pantalla completa</span>
+              </button>
+              <button type="button" class="btn" id="btn-dl-sim">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></svg>
+                <span>Descargar simulador</span>
+              </button>
+            </div>
+          </div>
+          <iframe class="frame tall" id="f-sim" title="Simulador interactivo" sandbox="allow-scripts allow-same-origin"></iframe>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer Institucional -->
+  <footer class="pad">
+    <div class="in foot">
+      <span>Universidad de Oriente · Venezuela</span>
+      <span class="me">MSc. Rubén Vega</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* Archivos incrustados para juegos y simuladores */
+var FILES = {
+"game": `<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Home Run: Equilibrio de partículas</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mu:#5d6773;--ac:#2563eb;--ln:#d5d9de;--ok:#16a34a;--ko:#dc2626;--okb:#dcfce7;--kob:#fee2e2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171b;--card:#1d2127;--tx:#e8ebee;--mu:#9aa4af;--ac:#6ea0ff;--ln:#323843;--ok:#4ade80;--ko:#f87171;--okb:#14351f;--kob:#3b1717}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:14px;display:grid;gap:12px}
+h1{margin:0;font-size:20px}
+.sb{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.sb div{background:var(--card);border:1px solid var(--ln);border-radius:10px;padding:6px 8px;text-align:center}
+.sb small{display:block;color:var(--mu);font-size:11px}.sb b{font-size:17px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px}
+svg{width:100%;height:auto;display:block;border-radius:10px}
+.q{font-weight:600;margin:0 0 10px}
+.src{color:var(--mu);font-size:12px;margin-bottom:6px}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:11px 12px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:9px;font-size:15px;cursor:pointer}
+.opt:disabled{cursor:default}
+.opt.ok{background:var(--okb);border-color:var(--ok)}
+.opt.ko{background:var(--kob);border-color:var(--ko)}
+.fb{margin-top:8px;font-size:14px;color:var(--mu)}
+.btn{margin-top:10px;width:100%;padding:11px;border:0;border-radius:9px;background:var(--ac);color:#fff;font-size:16px;cursor:pointer}
+.btn:disabled{opacity:.4}
+.rv{font-size:14px;margin:8px 0;padding:8px 10px;background:var(--bg);border-radius:8px}
+</style></head><body>
+<div class="wrap">
+<h1>⚾ Home Run: Equilibrio de partículas</h1>
+<div class="sb"><div><small>Pregunta</small><b id="n"></b></div><div><small>Home runs</small><b id="hr">0</b></div><div><small>Strikes</small><b id="st">○○○</b></div><div><small>Ponches</small><b id="po">0</b></div></div>
+<svg id="sv" viewBox="0 0 600 340">
+<defs><linearGradient id="sk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fb7ee"/><stop offset="1" stop-color="#cfeaff"/></linearGradient></defs>
+<rect width="600" height="340" fill="url(#sk)"/>
+<rect y="48" width="600" height="80" fill="#5b5f7a"/><g id="crowd"></g>
+<path d="M0 128 Q300 98 600 128 L600 150 Q300 120 0 150Z" fill="#1f6f43"/><path d="M0 128 Q300 98 600 128" fill="none" stroke="#facc15" stroke-width="4"/>
+<rect y="140" width="600" height="200" fill="#3fa34d"/>
+<ellipse cx="300" cy="288" rx="190" ry="48" fill="#c08a54"/><ellipse cx="300" cy="172" rx="26" ry="8" fill="#c08a54"/>
+<polygon points="282,280 318,280 318,289 300,299 282,289" fill="#fff"/>
+<g stroke="#fff" stroke-width="3" fill="#fff"><circle cx="300" cy="148" r="6"/><line x1="300" y1="154" x2="300" y2="170"/><line x1="300" y1="170" x2="294" y2="182"/><line x1="300" y1="170" x2="307" y2="182"/></g>
+<ellipse cx="300" cy="324" rx="26" ry="16" fill="#374151"/><circle cx="300" cy="305" r="9" fill="#374151"/><circle cx="300" cy="301" r="11" fill="#8b5a2b"/>
+<g stroke="#1b1f24" stroke-width="4" stroke-linecap="round" fill="none"><line x1="250" y1="218" x2="250" y2="252"/><line x1="250" y1="252" x2="238" y2="288"/><line x1="250" y1="252" x2="263" y2="288"/><line x1="250" y1="226" x2="266" y2="232"/></g>
+<circle cx="250" cy="208" r="10" fill="#f1c27d" stroke="#1b1f24" stroke-width="2"/><path d="M240 207a10 8 0 0 1 20 0z" fill="#dc2626"/>
+<g id="bat" transform="translate(266 232) rotate(-30)"><line x1="0" y1="0" x2="0" y2="-62" stroke="#d9a066" stroke-width="6" stroke-linecap="round"/></g>
+<circle id="ball" r="3" fill="#fff" stroke="#888" stroke-width="1" visibility="hidden"/>
+<text id="bn" x="300" y="95" text-anchor="middle" font-size="46" font-weight="900" fill="#fff" stroke="#1b1f24" stroke-width="2" paint-order="stroke" opacity="0"></text>
+</svg>
+<div class="card" id="box"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const Q=[
+{q:"¿Cuál es la condición necesaria y suficiente para que una partícula esté en equilibrio?",o:["ΣF = 0 (la fuerza resultante es cero)","ΣF = m·g","ΣF > 0 en la dirección del movimiento","ΣF = k·Δl"],e:"Una partícula está en equilibrio si cumple la primera ley de Newton: la fuerza resultante es cero."},
+{q:"Una partícula en equilibrio puede estar:",o:["En reposo o con velocidad constante","Solo en reposo","Con aceleración constante","Con velocidad que aumenta de forma uniforme"],e:"Si ΣF = 0, entonces m·a = 0, así que a = 0: reposo o velocidad constante."},
+{q:"En el espacio (3D), ¿qué ecuaciones debe cumplir una partícula en equilibrio?",o:["ΣFx = 0, ΣFy = 0 y ΣFz = 0","Solo ΣFx = 0 y ΣFy = 0","Solo ΣFz = 0","ΣF = m·a en cada eje"],e:"En el espacio se debe cumplir Rx = ΣFx = 0, Ry = ΣFy = 0 y Rz = ΣFz = 0."},
+{q:"En un DCL, si al resolver una fuerza cuyo sentido supusiste sale con magnitud negativa, significa que:",o:["El sentido real es contrario al supuesto","El problema no tiene solución","La partícula no está en equilibrio","Hay que duplicar esa fuerza"],e:"La magnitud de una fuerza siempre es positiva; el signo negativo indica que el sentido asumido era el contrario."},
+{q:"¿A qué tipo de fuerza puede someterse un cable?",o:["Solo a tensión (fuerza que lo jala)","Solo a compresión","A tensión y compresión por igual","A ninguna fuerza"],e:"Un cable es perfectamente flexible: solo puede jalarse; si se comprime, se dobla."},
+{q:"Si un cable pasa por una polea sin fricción, las tensiones a ambos lados cumplen:",o:["T1 = T2","T1 = 2·T2","T1 = T2 / 2","T1 + T2 = 0"],e:"En la condición ideal (sin fricción) la magnitud de la tensión es constante al pasar por la polea."},
+{q:"¿Cuál es la fuerza de un resorte elástico lineal de rigidez k?",o:["Fr = k(lf − lo)","Fr = k / Δl","Fr = k·Δl²","Fr = m·g"],e:"Fr = k·Δl = k(lf − lo): la fuerza es proporcional a la deformación."},
+{q:"Si la fuerza del resorte Fr es negativa, entonces:",o:["Δl es negativo (lo > lf) y el resorte se comprime","El resorte se está estirando","El resorte no ejerce fuerza","La constante k es negativa"],e:"Fr positiva → resorte jalado (lf > lo). Fr negativa → resorte comprimido (lo > lf)."},
+{q:"¿Cuántas incógnitas se pueden determinar como máximo en el plano y en el espacio?",o:["2 en el plano y 3 en el espacio","3 en el plano y 2 en el espacio","1 en el plano y 2 en el espacio","3 en ambos"],e:"En el plano hay 2 ecuaciones (ΣFx, ΣFy) y en el espacio 3 (ΣFx, ΣFy, ΣFz)."},
+{q:"Si sobre la partícula actúan solo tres fuerzas, la solución es más fácil con:",o:["Un triángulo de fuerzas","Una integral","Solo la ΣFz","Ningún método"],e:"Caso I: tres fuerzas → triángulo de fuerzas. Caso II: más de tres → componentes X e Y."},
+{q:"Ejemplo 22: esfera de masa m atada a una cuerda L sobre una superficie esférica lisa de radio R (altura h). ¿Cuánto vale la tensión T?",o:["T = m·g·L / (h + R)","T = m·g·(h + R) / L","T = m·g·R / L","T = m·g·L·(h + R)"],e:"De ΣFx: N = T·R/L. Sustituyendo en ΣFy queda T[(h+R)/L] = mg → T = mgL/(h+R)."},
+{q:"Ejemplo 24: lámpara de 8 kg (W = 78,5 N) sostenida por la cuerda AC a 30° y un resorte horizontal. ¿Cuánto vale TAC?",o:["157 N","78,5 N","136 N","272 N"],e:"ΣFy = 0: TAC·sen 30° = 78,5 N → TAC = 157 N."},
+{q:"Ejemplo 25: bloques de 42 kg y 50 kg sobre un plano inclinado 20° y una pared. ¿Qué valor debe tener F?",o:["162 N","412 N","693,7 N","960,4 N"],e:"Con F1-2 = 693,7 N y NA = 960,4 N, ΣFx del cuerpo 1 da F ≈ 162 N."},
+{q:"Ejemplo 26: FR = 157,3 N y el resorte pasa de lo = 0,2693 m a lf = 0,3905 m. ¿Cuál es k?",o:["≈ 1297 N/m","≈ 157 N/m","≈ 300 N/m","≈ 650 N/m"],e:"k = FR / (lf − lo) = 157,3 N / 0,1213 m ≈ 1297 N/m."},
+{q:"Ejercicio 91: dos resortes idénticos (lo = 0,4 m, apoyos separados 0,6 m) sostienen 50 kg y se alargan a 0,6 m. ¿Cuál es k?",o:["≈ 1416 N/m","≈ 2450 N/m","≈ 708 N/m","≈ 490 N/m"],e:"Cada resorte forma 60° con la horizontal: 2F·sen 60° = 490,5 N → F ≈ 283 N; k = 283 / 0,2 ≈ 1416 N/m."}
+];
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let L,i,hr,stk,po,miss,busy;
+(()=>{let s='';for(let k=0;k<110;k++){s+=\`<circle cx="\${(k*37)%600}" cy="\${58+(k*13)%58}" r="3.5" fill="\${['#f87171','#fbbf24','#60a5fa','#e5e7eb'][k%4]}"/>\`} $('crowd').innerHTML=s})();
+function start(){L=sh(Q).map(q=>({...q,o:sh(q.o.map((t,k)=>({t,ok:k==0})))}));i=0;hr=0;stk=0;po=0;miss=[];ask()}
+function hud(){$('n').textContent=Math.min(i+1,L.length)+"/"+L.length;$('hr').textContent=hr;$('st').textContent="●".repeat(stk)+"○".repeat(3-stk);$('po').textContent=po}
+function ask(){
+ reset();hud();busy=false;const q=L[i];
+ $('box').innerHTML=\`<div class="src">Basado en la guía: Tema 3 · Equilibrio de partículas</div><p class="q">\${q.q}</p>\`+q.o.map((o,k)=>\`<button class="opt" data-k="\${k}">\${o.t}</button>\`).join('')+\`<div class="fb" id="fb"></div><button class="btn" id="nx" disabled>Siguiente lanzamiento ⚾</button>\`;
+ $('box').querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+}
+async function pick(k){
+ if(busy)return;busy=true;const q=L[i],ok=q.o[k].ok;
+ const bs=$('box').querySelectorAll('.opt');bs.forEach((b,j)=>{b.disabled=true;if(q.o[j].ok)b.classList.add('ok');else if(j==k)b.classList.add('ko')});
+ $('fb').innerHTML=(ok?"✅ ¡Correcto! ":"❌ Incorrecto. ")+q.e;
+ if(ok)hr++;else{stk++;miss.push(q)}
+ let msg=ok?"¡HOME RUN!":"¡STRIKE!";
+ if(stk>=3){stk=0;po++;msg="¡PONCHE!"}
+ await play(ok,msg);hud();
+ $('nx').disabled=false;$('nx').onclick=()=>{i++;i<L.length?ask():end()};
+}
+function end(){
+ reset();$('n').textContent=L.length+"/"+L.length;const p=Math.round(hr/L.length*100);
+ const t=p>=85?"🏆 ¡Jugador más valioso!":p>=60?"⭐ ¡Buen juego, sigue practicando!":"💪 Toca repasar la guía y volver al plato.";
+ $('box').innerHTML=\`<p class="q">¡Juego terminado! \${t}</p><p>Home runs: <b>\${hr}</b> de \${L.length} (\${p} %) · Ponches: <b>\${po}</b></p>\`+(miss.length?\`<div class="src">Para repasar:</div>\`+miss.map(q=>\`<div class="rv"><b>\${q.q}</b><br>✔ \${q.o.find(o=>o.ok).t}<br><span style="color:var(--mu)">\${q.e}</span></div>\`).join(''):\`<p>¡Sin errores, bateo perfecto!</p>\`)+\`<button class="btn" id="rp">Jugar de nuevo</button>\`;
+ $('rp').onclick=start;
+}
+function reset(){$('bat').setAttribute('transform','translate(266 232) rotate(-30)');$('ball').setAttribute('visibility','hidden');$('bn').setAttribute('opacity',0)}
+function play(ok,msg){return new Promise(res=>{
+ const ball=$('ball'),bat=$('bat'),bn=$('bn');bn.textContent=msg;bn.setAttribute('fill',ok?'#facc15':'#f87171');
+ const s0=ok?240:100,PT=720,FT=ok?1300:140,t0=performance.now();ball.setAttribute('visibility','visible');
+ (function f(now){const t=now-t0;
+  const u=Math.min(1,Math.max(0,(t-s0)/600));bat.setAttribute('transform',\`translate(266 232) rotate(\${-30+200*u})\`);
+  let x,y,r;
+  if(t<PT){const p=Math.pow(t/PT,1.6);x=300+6*p;y=125+140*p;r=2+6*p}
+  else if(ok){const w=Math.min(1,(t-PT)/FT);x=306+160*w;y=265-420*w+160*w*w;r=8-5*w}
+  else{const w=Math.min(1,(t-PT)/FT);x=306-6*w;y=265+33*w;r=8+w}
+  ball.setAttribute('cx',x);ball.setAttribute('cy',y);ball.setAttribute('r',r);
+  if(t>=PT)bn.setAttribute('opacity',1);
+  if(t<PT+FT+(ok?0:500))requestAnimationFrame(f);else{if(ok)ball.setAttribute('visibility','hidden');res()}
+ })(t0)})}
+start();
+<\/script></body></html>`,
+
+"poleas": `<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulador de poleas</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mu:#5d6773;--ac:#2563eb;--rope:#b45309;--ln:#d5d9de;--ok:#16a34a;--w:#dc2626;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171b;--card:#1d2127;--tx:#e8ebee;--mu:#9aa4af;--ac:#6ea0ff;--rope:#f0a04b;--ln:#323843;--ok:#4ade80;--w:#f87171}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:16px;display:grid;gap:14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media(max-width:720px){.wrap{grid-template-columns:1fr}}
+h1{grid-column:1/-1;margin:0;font-size:20px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px}
+svg{width:100%;height:auto;max-height:560px;display:block}
+.seg{display:flex;gap:6px;margin:6px 0 12px}
+.seg button{flex:1;padding:9px 0;border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:8px;font-size:15px;cursor:pointer}
+.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+label{display:flex;justify-content:space-between;color:var(--mu);font-size:13px;margin-top:8px}
+input[type=range]{width:100%}
+.btn{width:100%;margin-top:10px;padding:10px;border:0;border-radius:8px;background:var(--ac);color:#fff;font-size:15px;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.k{background:var(--bg);border-radius:8px;padding:8px 10px}
+.k small{color:var(--mu);display:block;font-size:12px}
+.k b{font-size:18px}
+.big b{color:var(--ac)}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13px}
+.bar i{display:block;height:14px;background:var(--ln);border-radius:4px;transition:width .2s}
+.bar.on i{background:var(--ac)}
+.note{color:var(--mu);font-size:12.5px;margin-top:10px}
+</style></head><body>
+<div class="wrap">
+<h1>Simulador de poleas: fuerza al jalar la cuerda</h1>
+<div class="card"><svg id="svg" viewBox="0 0 360 480"></svg></div>
+<div>
+<div class="card">
+<div>Número de poleas</div>
+<div class="seg" id="seg"></div>
+<label><span>Masa m</span><span id="mv"></span></label>
+<input type="range" id="m" min="1" max="100" value="20">
+<label><span>Jalar la cuerda</span><span id="sv"></span></label>
+<input type="range" id="s" min="0" max="4" step="0.01" value="0">
+<label><span>Pérdida por rozamiento en cada polea</span><span id="fv"></span></label>
+<input type="range" id="f" min="0" max="15" value="0">
+<button class="btn" id="play">▶ Jalar automáticamente</button>
+<div class="grid">
+<div class="k big"><small>Fuerza para jalar F</small><b id="F"></b></div>
+<div class="k"><small>Peso del objeto (mg)</small><b id="P"></b></div>
+<div class="k"><small>Cuerda jalada</small><b id="S"></b></div>
+<div class="k"><small>Altura que sube el peso</small><b id="H"></b></div>
+<div class="k"><small>Trabajo que hago (F·s)</small><b id="Wi"></b></div>
+<div class="k"><small>Trabajo útil (mg·h)</small><b id="Wo"></b></div>
+</div>
+<div class="note" id="eq"></div>
+</div>
+<div class="card" style="margin-top:14px">
+<div style="margin-bottom:4px">Fuerza necesaria según el número de poleas</div>
+<div id="bars"></div>
+<div class="note">Modelo: n poleas → n tramos de cuerda sostienen la carga (ventaja mecánica n). F = m·g / n (g = 9,8 m/s²). Con rozamiento: F = m·g / (n·η), con η = (1 − pérdida)ⁿ. A cambio de menos fuerza, hay que jalar n veces más cuerda: el trabajo no se ahorra.</div>
+</div>
+</div>
+</div>
+<script>
+const $=id=>document.getElementById(id),g=9.8,PX=40;
+let n=1,play=false;
+const seg=$('seg');
+for(let i=1;i<=4;i++){const b=document.createElement('button');b.textContent=i;b.onclick=()=>{n=i;draw()};seg.appendChild(b)}
+['m','s','f'].forEach(i=>$(i).oninput=draw);
+$('play').onclick=()=>{play=!play;$('play').textContent=play?'⏸ Pausar':'▶ Jalar automáticamente';if(play){if(+$('s').value>=4)$('s').value=0;tick()}};
+function tick(){if(!play)return;let v=+$('s').value+0.012;if(v>=4){v=4;play=false;$('play').textContent='▶ Jalar automáticamente'}$('s').value=v;draw();if(play)requestAnimationFrame(tick)}
+const fmt=(x,d=1)=>x.toFixed(d).replace('.',',');
+function F(k,m,fr){return m*g/(k*Math.pow(1-fr/100,k))}
+function draw(){
+ const m=+$('m').value,s=+$('s').value,fr=+$('f').value;
+ [...seg.children].forEach((b,i)=>b.className=i+1==n?'on':'');
+ const f=F(n,m,fr),P=m*g,h=s/n;
+ $('mv').textContent=m+' kg';$('sv').textContent=fmt(s,2)+' m';$('fv').textContent=fr+' %';
+ $('F').textContent=fmt(f)+' N';$('P').textContent=fmt(P)+' N';
+ $('S').textContent=fmt(s,2)+' m';$('H').textContent=fmt(h,2)+' m';
+ $('Wi').textContent=fmt(f*s)+' J';$('Wo').textContent=fmt(P*h)+' J';
+ $('eq').textContent='F = '+fmt(P)+' N ÷ '+n+(fr?' ÷ '+fmt(Math.pow(1-fr/100,n),2)+' (rendimiento)':'')+' = '+fmt(f)+' N  (≈ '+fmt(f/g)+' kgf)';
+ let mx=F(1,m,fr),bh='';
+ for(let k=1;k<=4;k++){const v=F(k,m,fr);bh+=\`<div class="bar \${k==n?'on':''}"><span style="width:62px">\${k} polea\${k>1?'s':''}</span><i style="width:\${Math.max(4,v/mx*55)}%"></i><span>\${fmt(v)} N</span></div>\`}
+ $('bars').innerHTML=bh;
+ const yt=70,yb=yt+230-h*PX,X0=100,x=i=>X0+(i-1)*28,up=i=>i%2==n%2;
+ const handY=200+s*PX;
+ let o=\`<rect x="60" y="50" width="250" height="8" rx="3" fill="var(--mu)"/>\`;
+ let d=n%2?\`M\${x(1)} \${yb}\`:\`M\${x(1)} \${yt}\`;
+ if(!(n%2))o+=\`<circle cx="\${x(1)}" cy="\${yt}" r="4" fill="var(--mu)"/>\`;
+ let pul=[];
+ for(let i=1;i<=n;i++){
+  d+=\` L\${x(i)} \${up(i)?yt:yb}\`;
+  if(i<n){const c=(x(i)+x(i+1))/2;d+=\` A14 14 0 0 \${up(i)?1:0} \${x(i+1)} \${up(i)?yt:yb}\`;pul.push([c,up(i)?yt:yb])}
+ }
+ const ex=x(n)+14;pul.push([ex,yt]);
+ d+=\` A14 14 0 0 1 \${x(n)+28} \${yt} L\${x(n)+28} \${handY}\`;
+ o+=\`<path d="\${d}" fill="none" stroke="var(--rope)" stroke-width="3" stroke-linejoin="round"/>\`;
+ pul.forEach(p=>{o+=\`<circle cx="\${p[0]}" cy="\${p[1]}" r="14" fill="var(--card)" stroke="var(--tx)" stroke-width="2"/><circle cx="\${p[0]}" cy="\${p[1]}" r="3" fill="var(--tx)"/>\`;
+  if(p[1]==yt)o+=\`<line x1="\${p[0]}" y1="\${yt}" x2="\${p[0]}" y2="54" stroke="var(--mu)" stroke-width="2"/>\`});
+ const xs=pul.filter(p=>p[1]==yb).map(p=>p[0]);if(n%2)xs.push(x(1));
+ const x0=Math.min(...xs),x1=Math.max(...xs),cx=(x0+x1)/2;
+ xs.forEach(a=>o+=\`<line x1="\${a}" y1="\${yb}" x2="\${a}" y2="\${yb+20}" stroke="var(--tx)" stroke-width="2"/>\`);
+ o+=\`<line x1="\${x0}" y1="\${yb+20}" x2="\${x1}" y2="\${yb+20}" stroke="var(--tx)" stroke-width="3"/><line x1="\${cx}" y1="\${yb+20}" x2="\${cx}" y2="\${yb+34}" stroke="var(--tx)" stroke-width="2"/>\`;
+ o+=\`<rect x="\${cx-24}" y="\${yb+34}" width="48" height="44" rx="5" fill="var(--ac)"/><text x="\${cx}" y="\${yb+61}" text-anchor="middle" fill="#fff" font-size="14" font-weight="600">\${m} kg</text>\`;
+ const ya=yb+78;o+=\`<line x1="\${cx}" y1="\${ya}" x2="\${cx}" y2="\${ya+60}" stroke="var(--w)" stroke-width="3"/><path d="M\${cx-6} \${ya+54}L\${cx} \${ya+64}L\${cx+6} \${ya+54}Z" fill="var(--w)"/><text x="\${cx+10}" y="\${ya+40}" fill="var(--w)" font-size="12">mg</text>\`;
+ const hx=x(n)+28,L=Math.max(6,60*f/P);
+ o+=\`<circle cx="\${hx}" cy="\${handY}" r="6" fill="var(--rope)"/><line x1="\${hx}" y1="\${handY+6}" x2="\${hx}" y2="\${handY+6+L}" stroke="var(--ok)" stroke-width="3"/><path d="M\${hx-6} \${handY+L}L\${hx} \${handY+L+11}L\${hx+6} \${handY+L}Z" fill="var(--ok)"/><text x="\${hx+10}" y="\${handY+24}" fill="var(--ok)" font-size="12" font-weight="600">F</text>\`;
+ o+=\`<text x="12" y="472" fill="var(--mu)" font-size="12">Tramos que sostienen la carga: \${n}</text>\`;
+ $('svg').innerHTML=o;
+}
+draw();
+<\/script></body></html>`,
+
+"res": `<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulador 3D de resorte: tensión y compresión</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mu:#5d6773;--ac:#2563eb;--co:#dc2626;--ln:#d5d9de;--ok:#16a34a;--wa:#b45309;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14171b;--card:#1d2127;--tx:#e8ebee;--mu:#9aa4af;--ac:#6ea0ff;--co:#f87171;--ln:#323843;--ok:#4ade80;--wa:#f0a04b}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:1000px;margin:0 auto;padding:16px;display:grid;gap:14px}
+h1{margin:0;font-size:20px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:14px}
+.two{display:grid;gap:14px;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media(max-width:760px){.two{grid-template-columns:1fr}}
+.view{position:relative}
+canvas{width:100%;height:380px;display:block;border-radius:8px;touch-action:none;background:var(--bg)}
+.cap{position:absolute;left:10px;top:8px;font-weight:600;font-size:15px}
+.hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--mu)}
+.rv{position:absolute;right:10px;bottom:8px;padding:5px 10px;border:1px solid var(--ln);background:var(--card);color:var(--tx);border-radius:8px;font-size:12px;cursor:pointer}
+.seg{display:flex;gap:6px;margin:6px 0 10px}
+.seg button{flex:1;padding:9px 0;border:1px solid var(--ln);background:var(--bg);color:var(--tx);border-radius:8px;font-size:14px;cursor:pointer}
+.seg button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+select{width:100%;padding:9px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--tx);font-size:15px}
+label{display:flex;justify-content:space-between;color:var(--mu);font-size:13px;margin-top:8px}
+input[type=range]{width:100%}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.k{background:var(--bg);border-radius:8px;padding:8px 10px}
+.k small{color:var(--mu);display:block;font-size:12px}
+.k b{font-size:17px}
+.st{margin-top:10px;padding:9px 10px;border-radius:8px;background:var(--bg);font-size:14px}
+.note{color:var(--mu);font-size:12.5px;margin-top:8px}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13px}
+.bar i{display:block;height:14px;background:var(--ln);border-radius:4px;min-width:3px}
+.bar.on i{background:var(--ac)}
+</style></head><body>
+<div class="wrap">
+<h1>Resorte y barra elástica en 3D: tensión, compresión y material</h1>
+<div class="card view"><canvas id="cv"></canvas><div class="cap" id="cap"></div><div class="hint">Arrastra para girar · rueda o pellizco para acercar</div><button class="rv" id="rv">Restablecer vista</button></div>
+<div class="two">
+<div class="card">
+<div>Elemento elástico</div>
+<div class="seg" id="seg"><button data-m="0">Resorte helicoidal</button><button data-m="1">Barra axial</button></div>
+<div>Material</div>
+<select id="mat"></select>
+<div id="pars"></div>
+<label><span>Fuerza aplicada F (+ tensión / − compresión)</span><span id="Fv"></span></label>
+<input type="range" id="F" value="0">
+<label><span>Amplificación visual de la deformación</span><span id="Mv"></span></label>
+<input type="range" id="M" min="1" max="2000" value="1">
+</div>
+<div class="card">
+<div class="grid">
+<div class="k"><small>Constante k</small><b id="k"></b></div>
+<div class="k"><small>Tipo de esfuerzo</small><b id="ty"></b></div>
+<div class="k"><small>Cambio de longitud ΔL</small><b id="dl"></b></div>
+<div class="k"><small>Longitud final</small><b id="lf"></b></div>
+<div class="k"><small>Fuerza interna / reacción</small><b id="R"></b></div>
+<div class="k"><small id="sl">Esfuerzo</small><b id="sg"></b></div>
+</div>
+<div class="st" id="stat"></div>
+<div class="note" id="eq"></div>
+<div style="margin-top:12px">ΔL con la misma F y geometría en cada material</div>
+<div id="bars"></div>
+</div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"><\/script>
+<script>
+const $=id=>document.getElementById(id);
+const MAT=[["Acero",200,79.3,250],["Acero inoxidable",193,77,215],["Aluminio",69,26,100],["Cobre",117,44,70],["Latón",100,37,200],["Titanio",110,41,880],["Nailon",2.7,1,70]];
+const CFG=[
+ {fmax:500,mag:1,p:[["Diámetro del alambre d",1,10,.5,3,"mm"],["Diámetro medio de espira D",10,60,1,25,"mm"],["Número de espiras N",3,20,1,10,""],["Longitud libre L₀",50,250,1,120,"mm"]]},
+ {fmax:50000,mag:300,p:[["Diámetro de la barra d",5,50,1,20,"mm"],["Longitud L₀",100,2000,10,1000,"mm"]]}];
+let mode=0,P=CFG[0].p.map(a=>a[4]);
+MAT.forEach((m,i)=>{const o=document.createElement('option');o.value=i;o.textContent=m[0];$('mat').appendChild(o)});
+function build(){
+ const c=CFG[mode];P=c.p.map(a=>a[4]);
+ $('pars').innerHTML=c.p.map((a,i)=>\`<label><span>\${a[0]}</span><span id="pv\${i}"></span></label><input type="range" data-i="\${i}" min="\${a[1]}" max="\${a[2]}" step="\${a[3]}" value="\${a[4]}">\`).join('');
+ $('pars').querySelectorAll('input').forEach(e=>e.oninput=()=>{P[+e.dataset.i]=+e.value;draw()});
+ $('F').min=-c.fmax;$('F').max=c.fmax;$('F').step=c.fmax/500;$('F').value=0;$('M').value=c.mag;
+}
+[...$('seg').children].forEach(b=>b.onclick=()=>{mode=+b.dataset.m;build();draw()});
+$('mat').onchange=draw;$('F').oninput=draw;$('M').oninput=draw;
+const f=(x,d=2)=>x.toFixed(d).replace('.',',');
+function geo(mi){
+ const m=MAT[mi];
+ if(mode==0){const d=P[0]/1e3,D=P[1]/1e3,N=P[2],Ls=N*d,L0=Math.max(P[3]/1e3,Ls*1.25);
+  return {k:m[2]*1e9*d**4/(8*D**3*N),L0,Ls,lim:0.577*m[3]*1e6,sf:8*D/(Math.PI*d**3)}}
+ const d=P[0]/1e3,A=Math.PI*d*d/4,L0=P[1]/1e3;
+ return {k:m[1]*1e9*A/L0,L0,lim:m[3]*1e6,sf:1/A};
+}
+function fk(k){return k>=1000?f(k/1000)+' kN/m':f(k)+' N/m'}
+function fl(x){const a=Math.abs(x);return a>=1e-5?f(x*1e3,a<1e-3?4:2)+' mm':f(x*1e6,1)+' μm'}
+
+const cv=$('cv'),T=THREE;
+const R=new T.WebGLRenderer({canvas:cv,antialias:true,alpha:true});
+R.setPixelRatio(Math.min(devicePixelRatio,2));
+const scene=new T.Scene(),cam=new T.PerspectiveCamera(42,2,.1,200);
+scene.add(new T.AmbientLight(0xffffff,.65));
+const dl=new T.DirectionalLight(0xffffff,.8);dl.position.set(8,14,10);scene.add(dl);
+const dl2=new T.DirectionalLight(0xffffff,.3);dl2.position.set(-6,-4,-8);scene.add(dl2);
+const ctl=new T.OrbitControls(cam,cv);
+function resetView(){cam.position.set(9,6,15);ctl.target.set(8,0,0);ctl.update();render()}
+$('rv').onclick=resetView;
+const grid=new T.GridHelper(40,40,0x8896a5,0xaab4c0);grid.position.set(8,-3,0);grid.material.transparent=true;grid.material.opacity=.35;scene.add(grid);
+const wall=new T.Mesh(new T.BoxGeometry(1,7,7),new T.MeshStandardMaterial({color:0x6b7684}));wall.position.x=-.5;scene.add(wall);
+const dyn=new T.Group();scene.add(dyn);
+function clear(){while(dyn.children.length){const c=dyn.children.pop();c.geometry&&c.geometry.dispose();c.material&&c.material.dispose()}}
+function mesh(g,col,x,y,z){const m=new T.Mesh(g,new T.MeshStandardMaterial({color:col,roughness:.45,metalness:.3}));m.position.set(x||0,y||0,z||0);dyn.add(m);return m}
+function arrow(x0,x1,col){const s=Math.sign(x1-x0),L=Math.abs(x1-x0),h=Math.min(.9,L*.5);
+ const sh=mesh(new T.CylinderGeometry(.14,.14,L-h,12),col,(x0+x1)/2-s*h/2);sh.rotation.z=Math.PI/2;
+ const hd=mesh(new T.ConeGeometry(.4,h,16),col,x1-s*h/2);hd.rotation.z=-s*Math.PI/2}
+function render(){R.render(scene,cam)}
+function size(){const w=cv.clientWidth,h=cv.clientHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();render()}
+ctl.addEventListener('change',render);addEventListener('resize',size);
+
+function draw(){
+ const c=CFG[mode],mi=+$('mat').value,Fa=+$('F').value,mag=+$('M').value;
+ [...$('seg').children].forEach(b=>b.className=+b.dataset.m==mode?'on':'');
+ c.p.forEach((a,i)=>$('pv'+i).textContent=P[i]+(a[5]?' '+a[5]:''));
+ $('Fv').textContent=f(Fa,0)+' N';$('Mv').textContent='×'+mag;
+ const g=geo(mi),dL=Fa/g.k,sig=Math.abs(Fa)*g.sf,ratio=sig/g.lim,tens=Fa>0,comp=Fa<0;
+ $('k').textContent=fk(g.k);
+ $('ty').textContent=tens?'Tensión':comp?'Compresión':'En reposo';
+ $('ty').style.color=tens?'var(--ac)':comp?'var(--co)':'var(--tx)';
+ $('dl').textContent=(dL>0?'+':'')+fl(dL);$('lf').textContent=fl(g.L0+dL);
+ $('R').textContent=f(Math.abs(Fa),1)+' N';
+ $('sl').textContent=mode?'Esfuerzo normal σ = F/A':'Esfuerzo cortante τ = 8FD/πd³';
+ $('sg').textContent=f(sig/1e6,1)+' MPa';
+ let st='<span style="color:var(--ok)">✔ Dentro del rango elástico</span> ('+f(ratio*100,0)+' % del límite). Al quitar F vuelve a su longitud original.';
+ if(ratio>1)st='<span style="color:var(--wa)">⚠ Supera el límite elástico del material: deformación permanente, la ley de Hooke ya no aplica.</span>';
+ if(mode==0&&dL<0&&-dL>=g.L0-g.Ls)st='<span style="color:var(--wa)">⚠ Resorte cerrado: las espiras se tocan y deja de comportarse linealmente.</span>';
+ $('stat').innerHTML=st;
+ $('eq').innerHTML=(mode?'k = E·A/L₀':'k = G·d⁴/(8·D³·N)')+' = '+fk(g.k)+' &nbsp;|&nbsp; ΔL = F/k = '+f(Fa,0)+' N ÷ '+fk(g.k)+' = '+fl(dL)+'<br>Equilibrio del bloque: ΣF = F − kΔL = 0 → la fuerza elástica es igual y opuesta a F.';
+ const vs=MAT.map((m,i)=>Math.abs(Fa/geo(i).k)),mx=Math.max(...vs,1e-12);
+ $('bars').innerHTML=MAT.map((m,i)=>\`<div class="bar \${i==mi?'on':''}"><span style="width:118px">\${m[0]}</span><i style="width:\${vs[i]/mx*45}%"></i><span>\${fl(vs[i])}</span></div>\`).join('');
+ const FL=10;let dp=dL/g.L0*FL*mag;dp=Math.max(-FL*.85,Math.min(5,dp));
+ const len=FL+dp,col=tens?0x2563eb:comp?0xdc2626:0x8a96a6;
+ $('cap').textContent=tens?'TENSIÓN (se alarga)':comp?'COMPRESIÓN (se acorta)':'Sin fuerza';
+ $('cap').style.color=tens?'var(--ac)':comp?'var(--co)':'var(--tx)';
+ clear();
+ if(mode==0){
+  const N=Math.min(P[2],20),rc=.5+P[1]/60,rw=.05+P[0]*.02,n=N*18,pts=[];
+  for(let i=0;i<=n;i++){const t=i/n,a=t*N*2*Math.PI;pts.push(new T.Vector3(t*len,rc*Math.cos(a),rc*Math.sin(a)))}
+  mesh(new T.TubeGeometry(new T.CatmullRomCurve3(pts),n*2,rw,8,false),col);
+  [0,len].forEach(x=>{const d=mesh(new T.CylinderGeometry(rc+.12,rc+.12,.12,32),col,x);d.rotation.z=Math.PI/2});
+ }else{
+  const r=.3+P[0]/50,b=mesh(new T.CylinderGeometry(r,r,len,32),col,len/2);b.rotation.z=Math.PI/2;
+ }
+ mesh(new T.BoxGeometry(2,2.6,2.6),0x8a96a6,len+1);
+ const mk=new T.Line(new T.BufferGeometry().setFromPoints([[FL,-1.8,-1.8],[FL,1.8,-1.8],[FL,1.8,1.8],[FL,-1.8,1.8],[FL,-1.8,-1.8]].map(p=>new T.Vector3(...p))),new T.LineBasicMaterial({color:0x8896a5}));
+ dyn.add(mk);
+ if(Fa!==0){const L=1.6+Math.abs(Fa)/c.fmax*3,xb=len+2;
+  if(tens){arrow(xb,xb+L,0x16a34a);arrow(-1,-1-L,0xd97706)}
+  else{arrow(xb+L,xb,0x16a34a);arrow(-1-L,-1,0xd97706)}}
+ render();
+}
+build();size();resetView();draw();
+<\/script></body></html>`
+};
+
+/* Nombres de descarga predeterminados */
+var FILE_NAMES = {
+  game: 'Home_Run_Equilibrio_de_particulas.html',
+  poleas: 'Simulador_de_poleas.html',
+  res: 'Simulador_3D_resorte_tension_compresion_material.html'
+};
+
+/* Script para auto-ajustar altura de iFrames */
+var RS = "<script>(function(){var l=0;function s(){var h=Math.ceil(document.body.getBoundingClientRect().height)+4;if(h!==l){l=h;parent.postMessage({h:h,id:window.name},'*')}}addEventListener('load',s);if(window.ResizeObserver)new ResizeObserver(s).observe(document.body);setInterval(s,800)})()<\/script>";
+
+/* Secciones de la plantilla institucional */
+var SECTIONS = [
+  { id: 'inicio', label: 'Inicio' },
+  { id: 'guia', label: 'Guía de clase' },
+  { id: 'simuladores', label: 'Simuladores' }
+];
+
+var SIM_INFO = {
+  poleas: {
+    title: 'Simulador de poleas',
+    desc: 'Fuerza al jalar una cuerda con 1, 2, 3 y 4 poleas'
+  },
+  res: {
+    title: 'Simulador 3D de resorte y barra elástica',
+    desc: 'Tensión, compresión, propiedades de materiales, k y variación de longitud'
+  }
+};
+
+var currentSim = 'poleas';
+
+function $(s, r) { return (r || document).querySelector(s); }
+
+/* Inyección de código en iframe con resizer */
+function loadFrame(iframe, fileKey) {
+  if (!FILES[fileKey]) return;
+  var raw = FILES[fileKey];
+  var pos = raw.lastIndexOf('</body>');
+  var srcdoc = pos < 0 ? raw + RS : raw.slice(0, pos) + RS + raw.slice(pos);
+  iframe.srcdoc = srcdoc;
+  iframe.dataset.loadedKey = fileKey;
+}
+
+/* Escucha mensajes de altura de iFrame */
+window.addEventListener('message', function(e) {
+  var data = e.data;
+  if (!data || typeof data.h !== 'number') return;
+  var iframes = document.querySelectorAll('iframe');
+  iframes.forEach(function(f) {
+    if (f.contentWindow === e.source) {
+      f.style.height = Math.max(520, data.h) + 'px';
+    }
+  });
+});
+
+/* Construcción de Pestañas */
+var tabsContainer = $('#tabs');
+SECTIONS.forEach(function(sec) {
+  var btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'tab';
+  btn.id = 't-' + sec.id;
+  btn.setAttribute('role', 'tab');
+  btn.textContent = sec.label;
+  btn.addEventListener('click', function() { go(sec.id, true); });
+  tabsContainer.appendChild(btn);
+});
+
+tabsContainer.addEventListener('keydown', function(e) {
+  var k = e.key;
+  if (k !== 'ArrowRight' && k !== 'ArrowLeft') return;
+  var curIdx = SECTIONS.findIndex(function(s) { return s.id === curId; });
+  var nextIdx = (curIdx + (k === 'ArrowRight' ? 1 : SECTIONS.length - 1)) % SECTIONS.length;
+  go(SECTIONS[nextIdx].id, true);
+  $('#t-' + SECTIONS[nextIdx].id).focus();
+});
+
+var curId = 'inicio';
+
+function go(id, push) {
+  if (!SECTIONS.some(function(s) { return s.id === id; })) id = 'inicio';
+  curId = id;
+
+  SECTIONS.forEach(function(s) {
+    var isSel = s.id === id;
+    var tabEl = $('#t-' + s.id);
+    var viewEl = $('#v-' + s.id);
+    if (tabEl) {
+      tabEl.setAttribute('aria-selected', String(isSel));
+      tabEl.tabIndex = isSel ? 0 : -1;
+    }
+    if (viewEl) {
+      viewEl.hidden = !isSel;
+    }
+  });
+
+  /* Carga diferida de elementos iframe al entrar a la sección */
+  if (id === 'inicio') {
+    var fGame = $('#f-game');
+    if (!fGame.dataset.loadedKey) {
+      loadFrame(fGame, 'game');
+    }
+  } else if (id === 'simuladores') {
+    var fSim = $('#f-sim');
+    if (fSim.dataset.loadedKey !== currentSim) {
+      loadFrame(fSim, currentSim);
+    }
+  }
+
+  if (push && location.hash !== '#' + id) {
+    location.hash = id;
+  }
+  try { window.scrollTo(0, 0); } catch(e){}
+}
+
+/* Manejador de selector de simuladores */
+var simButtons = document.querySelectorAll('#sim-selector button');
+simButtons.forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var key = btn.dataset.sim;
+    if (key === currentSim) return;
+    currentSim = key;
+
+    simButtons.forEach(function(b) {
+      b.setAttribute('aria-pressed', String(b === btn));
+    });
+
+    $('#sim-title').textContent = SIM_INFO[key].title;
+    $('#sim-desc').textContent = SIM_INFO[key].desc;
+
+    loadFrame($('#f-sim'), key);
+  });
+});
+
+/* Función de descarga de archivos */
+async function downloadFile(fileKey) {
+  var name = FILE_NAMES[fileKey] || 'archivo.html';
+  var content = FILES[fileKey];
+  if (!content) return;
+
+  try {
+    if (window.claude && typeof window.claude.use === 'function') {
+      var d = await window.claude.use('downloads');
+      if (d) {
+        await d.save({ filename: name, data: content });
+        return;
+      }
+    }
+  } catch (err) {
+    // Si falla claude.use, procedemos al método fallback estándar
+  }
+
+  /* Descarga genérica web mediante enlace data/blob */
+  var blob = new Blob([content], { type: 'text/html;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* Event listeners para Fullscreen y Descargas */
+$('#btn-fs-game').addEventListener('click', function() {
+  var frame = $('#f-game');
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else if (frame.requestFullscreen) {
+    frame.requestFullscreen();
+  }
+});
+
+$('#btn-dl-game').addEventListener('click', function() {
+  downloadFile('game');
+});
+
+$('#btn-fs-sim').addEventListener('click', function() {
+  var frame = $('#f-sim');
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else if (frame.requestFullscreen) {
+    frame.requestFullscreen();
+  }
+});
+
+$('#btn-dl-sim').addEventListener('click', function() {
+  downloadFile(currentSim);
+});
+
+/* Eventos de navegación global */
+window.addEventListener('hashchange', function() {
+  go(location.hash.replace('#', ''), false);
+});
+
+/* Inicialización */
+go(location.hash.replace('#', '') || 'inicio', false);
+
+})();
+</script>
+</body>
+</html>
